@@ -43,7 +43,7 @@ jobs:
 
     - name: Build Docker image (advanced version with custom name)
       run: |
-        docker build --build-arg NAME=${{ env.NAME }} -t hello-name .
+         docker build -f Dockerfile --build-arg NAME=${{ env.NAME }} -t hello-name .
 
     - name: Run Docker container (advanced version)
       run: |
