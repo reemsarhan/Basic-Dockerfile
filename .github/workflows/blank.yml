@@ -1,0 +1,50 @@
+name: Docker Build and Run
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/buildx
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Read name from file
+      id: read_name
+      run: |
+        NAME=$(cat imageName.txt)
+        echo "NAME=$NAME" >> $GITHUB_ENV
+
+    # - name: Build Docker image (basic version)
+    #   run: |
+    #     docker build -t hello-captain .
+
+    # - name: Run Docker container (basic version)
+    #   run: |
+    #     docker run hello-captain
+
+    - name: Build Docker image (advanced version with custom name)
+      run: |
+        docker build --build-arg NAME=${{ env.NAME }} -t hello-name .
+
+    - name: Run Docker container (advanced version)
+      run: |
+        docker run hello-name
