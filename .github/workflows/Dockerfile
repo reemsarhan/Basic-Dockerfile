@@ -1,8 +1,9 @@
-# Use the latest Alpine base image
+# Use the lightweight Alpine Linux as the base image
 FROM alpine:latest
 
-# Set a default value for the name argument
+# Use a build argument to pass a custom name, with a default value of "Captain"
 ARG NAME=Captain
 
-# Print "Hello, [NAME]!" to the console
-CMD ["sh", "-c", "echo Hello, ${NAME}!"]
+# Set the command to print "Hello, [NAME]!" and exit
+CMD echo "Hello, $NAME!"
+
